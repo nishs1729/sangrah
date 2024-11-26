@@ -84,5 +84,50 @@ def get_info(name, key=None, skip=0, delim='_', dtype=str):
         info = dict([[info_list[i], dtype(info_list[i+1])] for i in range(0,len(info_list),2)])
     return info
 
+
+def is_notebook(more=False):
+    """
+    Checks if code is running in a Jupyter notebook, IPython, or standard Python environment.
+
+    Parameters
+    ----------
+    more : bool, optional
+        If True, returns the environment name instead of a boolean.
+
+    Returns
+    -------
+    environment : str or bool
+        The environment name, or a boolean indicating if this is a notebook or not.
+    """
+    try:
+        shell = get_ipython().__class__.__name__
+
+        ## Jupyter notebook or qtconsole
+        if shell == 'ZMQInteractiveShell':
+            if more:
+                return 'notebook'
+            else:
+                return True
+        
+        ## Terminal running IPython
+        elif shell == 'TerminalInteractiveShell':
+            if more:
+                return 'IPython'
+            else:
+                return False
+        
+        ## Other type (?)
+        else:
+            return False
+        
+    ## Probably standard Python interpreter
+    except NameError:
+        if more:
+            return 'Probably standard Python interpreter'
+        else:
+            return False
+        
+
 if __name__ == '__main__':
     print(get_info('abc_1_def_2.3_ghi_3.txt', key=None, dtype=str))
+    is_notebook(more=True)
