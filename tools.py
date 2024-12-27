@@ -1,16 +1,20 @@
 import collections, six, operator
 from functools import reduce
+from collections.abc import Iterable
 
-### color palette
-cplight = ['#a1d99b', '#a6dcef', '#FF9677', '#bcbddc', '#17becf', '#d6616b', '#e7ba52', 
-           '#66c2a5', '#f09ae9', '#c7b198', '#99b898', '#b17a78', '#c168c8', '#bdbdbd',
-           '#ffffff']
-cplightp = ['#17becf', '#FF9677', '#a1d99b', '#d6616b', '#e7ba52', '#bcbddc', '#66c2a5',
-            '#c168c8', '#b17a78', '#a6dcef', '#f09ae9', '#c7b198', '#99b898', '#bdbdbd',
-            '#ffffff']
-cpdark  = ['#3182bd', '#e6550d', '#31a354', '#900c3f', '#cf7500', '#6b6ecf', '#008080', 
-           '#6a2c70', '#843c39', '#305F72', '#fa26a0', '#8c6d31', '#00454a', '#636363',
-           '#000000']
+### My color palette
+cplight = [
+    '#a1d99b', '#a6dcef', '#FF9677', '#bcbddc', '#17becf', '#d6616b', '#e7ba52', 
+    '#66c2a5', '#f09ae9', '#c7b198', '#99b898', '#b17a78', '#c168c8', '#bdbdbd', '#ffffff'
+]
+cplightp = [
+    '#17becf', '#FF9677', '#a1d99b', '#d6616b', '#e7ba52', '#bcbddc', '#66c2a5',
+    '#c168c8', '#b17a78', '#a6dcef', '#f09ae9', '#c7b198', '#99b898', '#bdbdbd', '#ffffff'
+]
+cpdark  = [
+    '#3182bd', '#e6550d', '#31a354', '#900c3f', '#cf7500', '#6b6ecf', '#008080', 
+    '#6a2c70', '#843c39', '#305F72', '#fa26a0', '#8c6d31', '#00454a', '#636363', '#000000'
+]
 cpall   = reduce(operator.add, zip(cpdark, cplight))
 cppaired = reduce(operator.add, zip(cpdark, cplightp))
 
@@ -127,7 +131,35 @@ def is_notebook(more=False):
         else:
             return False
         
+def flatten(target):
+    """
+    Recursively flatten a list of lists or other iterables.
+
+    Flattens a list of lists or other iterables into a single list.
+    If the target is not iterable, returns a list containing the target.
+
+    Parameters
+    ----------
+    target : iterable or other
+        The target to be flattened.
+
+    Returns
+    -------
+    flattened_list : list
+        The flattened list.
+    """
+    return sum(
+        (flatten(sub) if isinstance(sub, Iterable) and not isinstance(sub, (str, bytes)) else [sub] for sub in target), 
+        []
+    )
+        
 
 if __name__ == '__main__':
-    print(get_info('abc_1_def_2.3_ghi_3.txt', key=None, dtype=str))
-    is_notebook(more=True)
+    ## test is_notebook
+    # print(get_info('abc_1_def_2.3_ghi_3.txt', key=None, dtype=str))
+    # is_notebook(more=True)
+
+    ## test flatten
+    import numpy as np
+    l = [1,2,[2,3],[[[[['we', 'e', 7], 'w']]]], np.array([2,3,4]), dict({'a':1, 'b':2, 'c':3})]
+    print(flatten(l))
