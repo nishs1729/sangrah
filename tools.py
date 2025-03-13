@@ -135,7 +135,7 @@ def flatten(target):
     """
     Recursively flatten a list of lists or other iterables.
 
-    Flattens a list of lists or other iterables into a single list.
+    Flattens a list of lists or other iterables (except str, bytes) into a single list.
     If the target is not iterable, returns a list containing the target.
 
     Parameters
