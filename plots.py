@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def change_plot(df, key=0, order=None, color='black', lc='gray', lw=1, axis=None):
+def change_plot(df, key=0, order=None, color='black', lc='gray', lw=1, axis=None, save_loc=None):
     """
     Plots changes in a dataframe with lines connecting points.
 
@@ -13,7 +13,8 @@ def change_plot(df, key=0, order=None, color='black', lc='gray', lw=1, axis=None
         color (str or list, optional): Color of the points. Defaults to black.
         lc (str, optional): Line color. Defaults to gray.
         lw (float, optional): Line width. Defaults to 1.
-
+        save_loc (str, optional): Location to save the plot. Defaults to None.
+        
     Raises:
         ValueError: If length of color list does not match number of columns in dataframe.
         ValueError: If key is not a valid column index or name.
@@ -21,9 +22,10 @@ def change_plot(df, key=0, order=None, color='black', lc='gray', lw=1, axis=None
     Returns:
         None
     """
+
     # Create a new axis if none is provided
     if not axis:
-        _, axis = plt.subplots(figsize=(3, 5))
+        fig, axis = plt.subplots(figsize=(3, 5))
 
     # Set default line color if none is provided
     if lc is None:
@@ -69,4 +71,9 @@ def change_plot(df, key=0, order=None, color='black', lc='gray', lw=1, axis=None
 
     # Hide top and right spines
     axis.spines[['top', 'right']].set_visible(False)
+
+    # Save plot
+    if save_loc:
+        plt.savefig(save_loc, dpi=300, bbox_inches='tight', transparent=True)
+
     plt.show()
